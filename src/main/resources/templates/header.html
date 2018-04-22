@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <title>header</title>
+    <style>
+        #category .dropdown:hover > .dropdown-menu {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div id="header" th:fragment="header">
+    <template >
+        <v-card color="grey lighten-4" flat>
+            <v-toolbar color="white" light dense>
+                <v-toolbar-side-icon></v-toolbar-side-icon>
+                <v-toolbar-title th:href="@{/}">AmoLabs</v-toolbar-title>
+
+                <v-btn th:href="@{/}" icon>
+                    <v-icon>home</v-icon>
+                </v-btn>
+
+                <!--<v-btn sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">-->
+                    <!--Admin-->
+                <!--</v-btn>-->
+                <v-spacer></v-spacer>
+                <v-btn th:href="@{/logout}" icon>
+                    <v-icon>exit_to_app</v-icon>
+                </v-btn>
+            </v-toolbar>
+        </v-card>
+    </template>
+</div>
+</body>
+
+</html>

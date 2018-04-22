@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
+          rel="stylesheet">
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/webjars/font-awesome/4.7.0/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/vuetify.min.css}"/>
+    <title>Laba5</title>
+</head>
+<body>
+<div th:replace="header :: header">...</div>
+<div id="lab5">
+    <v-app>
+        <v-container>
+            <v-layout row my-5>
+                <v-flex xs12 sm6 offset-sm3>
+                    <v-card class="my-3" hover>
+                        <v-card-media
+                                class="white--text"
+                                height="170px"
+                                :src="`http://res.cloudinary.com/olejk4/image/upload/v1518472882/laba%201.jpg`"
+                        >
+                            <v-container fill-height fluid>
+                                <v-layout>
+                                    <v-flex xs12 align-end d-flex>
+                                        <span class="headline" th:text="${laba.heading}"></span>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+                        </v-card-media>
+                        <v-card-text th:text="${laba.task}">
+                        </v-card-text>
+                    </v-card>
+                    <v-flex my-5 xs-6>
+                        <v-form v-model="valid">
+                            <v-text-field
+                                    label="Input A"
+                                    v-model="A"
+                                    required
+                                    counter
+                                    multi-line
+                            >
+                            </v-text-field>
+                            <v-text-field
+                                    label="Input B"
+                                    v-model="B"
+                                    required
+                            >
+                            </v-text-field>
+                            <v-text-field
+                                    label="Input Epsilon"
+                                    v-model="epsilon"
+                                    :rules="numberRules"
+                                    :counter="5"
+                                    required
+                            ></v-text-field>
+                            <v-text-field
+                                    label="Input X"
+                                    v-model="X"
+                            ></v-text-field>
+                            <input id="_csrf" type="hidden"
+                                   th:value="${_csrf.token}">
+                            <v-btn
+                                    @click="submitSolve"
+                                    :disabled="!valid">
+                                submit
+                            </v-btn>
+                        </v-form>
+                    </v-flex>
+                    <v-flex xs12>
+                        <div id="func"></div>
+                        <v-card class="title">
+                            <v-card-media th:src="@{ArNFQ.gif}" height="200px">
+                            </v-card-media>
+                            <v-card-title primary-title>
+                                <div class="display-1" v-html="result">
+                                </div>
+                            </v-card-title>
+                        </v-card>
+                    </v-flex>
+
+                </v-flex>
+            </v-layout>
+        </v-container>
+    </v-app>
+</div>
+<script type="text/javascript" th:src="@{/webjars/vue/2.5.13/vue.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/axios/0.17.1/dist/axios.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/vuetify.js}"></script>
+<script type="text/javascript" th:src="@{/js/vue-resource.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/loader.js}"></script>
+<script type="text/javascript" th:src="@{/js/laba5.js}"></script>
+
+</body>
+</html>

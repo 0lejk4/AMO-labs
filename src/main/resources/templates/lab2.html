@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
+          rel="stylesheet">
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/webjars/font-awesome/4.7.0/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/vuetify.min.css}"/>
+    <style>
+        #array div {
+            margin-left: 40px;
+            margin-top: 20px
+        }
+
+        #array text {
+            fill: black;
+        }
+
+        #array rect {
+            fill: blue;
+        }
+
+        #array .sorted {
+            fill: red;
+        }
+
+        #array .min {
+            fill: red;
+        }
+
+        #array .testing {
+            fill: red;
+        }
+    </style>
+    <title>Laba2</title>
+</head>
+<body>
+<div th:replace="header :: header">...</div>
+<div id="lab2">
+    <v-app>
+        <v-container>
+            <v-layout row my-5>
+                <v-flex xs12 sm6 offset-sm3>
+                    <v-card class="my-3" hover>
+                        <v-card-media
+                                class="white--text"
+                                height="170px"
+                                :src="`http://res.cloudinary.com/olejk4/image/upload/v1518472882/laba%201.jpg`"
+                        >
+                            <v-container fill-height fluid>
+                                <v-layout>
+                                    <v-flex xs12 align-end d-flex>
+                                        <span class="headline" th:text="${laba.heading}"></span>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+                        </v-card-media>
+                        <v-card-text th:text="${laba.task}">
+                        </v-card-text>
+                    </v-card>
+                    <div id="linechart_material"></div>
+                    <div id="linechart_calculated"></div>
+                    <div id="linechart_server"></div>
+                    <v-flex my-5 xs-6>
+                        <v-form v-model="valid">
+                            <v-text-field
+                                    label="Array N"
+                                    v-model="n"
+                                    :rules="numberRules"
+                                    :counter="5"
+                                    required
+                            >
+                                >
+                            </v-text-field>
+                            <v-checkbox
+                                    :label="`ReadFile`"
+                                    v-model="readFile"
+                            ></v-checkbox>
+                            <input id="_csrf" type="hidden"
+                                   th:value="${_csrf.token}">
+                            <v-btn
+                                    @click="submitSort"
+                                    :disabled="!(readFile) && !valid"
+                            >
+                                submit
+                            </v-btn>
+                        </v-form>
+                    </v-flex>
+                    <v-flex xs12>
+                        <v-card v-if="sorted" class="title">
+                            <v-card-media th:src="@{ArNFQ.gif}" height="200px">
+                            </v-card-media>
+                            <v-card-title primary-title>
+                                <h1 class="display-1">{{time}}</h1>
+                            </v-card-title>
+                        </v-card>
+                    </v-flex>
+                </v-flex>
+
+            </v-layout>
+        </v-container>
+    </v-app>
+    <div v-if="n <= 2000" style="width: auto; height: 700px; overflow-y: scroll;">
+        <svg id="array">
+        </svg>
+    </div>
+    <div v-if="n >= 100 && n <= 2000" style="width: auto; height: 700px; overflow-y: scroll;">
+        <svg id="sorted">
+        </svg>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/webjars/vue/2.5.13/vue.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/axios/0.17.1/dist/axios.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/vuetify.js}"></script>
+<script type="text/javascript" th:src="@{/js/vue-resource.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/d3.v4.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/loader.js}"></script>
+<script type="text/javascript" th:src="@{/js/laba2.js}"></script>
+
+
+</body>
+</html>

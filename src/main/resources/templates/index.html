@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
+          rel="stylesheet">
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/webjars/font-awesome/4.7.0/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/vuetify.min.css}"/>
+
+    <title>Home</title>
+</head>
+<body>
+<div th:replace="header :: header">...</div>
+<div id="index" class="container-fluid">
+    <v-carousel>
+        <v-carousel-item
+                src="http://res.cloudinary.com/olejk4/image/upload/c_pad,h_500,w_2100/java.png">
+        </v-carousel-item>
+        <v-carousel-item
+                src="http://res.cloudinary.com/olejk4/image/upload/c_crop,h_500,w_2100/vue.png">
+        </v-carousel-item>
+        <v-carousel-item
+                src="http://res.cloudinary.com/olejk4/image/upload/c_crop,h_500,w_2100/spring.jpg">
+        </v-carousel-item>
+    </v-carousel>
+    <v-layout row my-5>
+        <v-flex xs12 sm6 offset-sm3>
+            <v-flex xs12 md5 offset-md2>
+                <div th:each="lab : ${allLabs}" th:key="${lab.heading}">
+                    <v-card class="my-3" hover>
+                        <v-card-media
+                                class="white--text"
+                                height="170px"
+                                :src="`http://res.cloudinary.com/olejk4/image/upload/v1518472882/laba%201.jpg`"
+                        >
+                            <v-container fill-height fluid>
+                                <v-layout>
+                                    <v-flex xs12 align-end d-flex>
+                                        <span class="headline" th:text="${lab.heading}"></span>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+                        </v-card-media>
+                        <v-card-text th:text="${lab.task}">
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <a th:href="@{${lab.methodUrl}}">
+                                <v-btn flat class="blue--text">Read More</v-btn>
+                            </a>
+
+                        </v-card-actions>
+                    </v-card>
+                </div>
+            </v-flex>
+        </v-flex>
+    </v-layout>
+
+</div>
+<script type="text/javascript" th:src="@{/webjars/vue/2.5.13/vue.js}"></script>
+<script type="text/javascript" th:src="@{/js/vuetify.js}"></script>
+<script type="text/javascript">
+    new Vue({el: '#header'});
+    new Vue({el: '#index'})
+</script>
+</body>
+</html>

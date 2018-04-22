@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
+          rel="stylesheet">
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/webjars/font-awesome/4.7.0/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/vuetify.min.css}"/>
+    <title>Laboratory assigment 1</title>
+</head>
+<body>
+<div th:replace="header :: header">...</div>
+<div id="lab1">
+    <v-app>
+        <h1 class="display-4">{{a.hasError}}</h1>
+        <v-container>
+            <v-layout row my-5>
+                <v-flex xs12 sm6 offset-sm3>
+                    <v-card class="my-3" hover>
+                        <v-card-media
+                                class="white--text"
+                                height="170px"
+                                :src="`http://res.cloudinary.com/olejk4/image/upload/v1518472882/laba%201.jpg`"
+                        >
+                            <v-container fill-height fluid>
+                                <v-layout>
+                                    <v-flex xs12 align-end d-flex>
+                                        <span class="headline" th:text="${laba.heading}"></span>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+                        </v-card-media>
+                        <v-card-text th:text="${laba.task}">
+                        </v-card-text>
+                    </v-card>
+                    <v-tabs
+                            icons-and-text
+                            fixed-tabs
+                            centered
+                            v-model="active"
+                            color="cyan"
+                            dark
+                            slider-color="yellow">
+                        <v-tab
+                                :key="1">
+                            Linear
+                            <v-icon>view_headline</v-icon>
+                        </v-tab>
+                        <v-tab-item
+                                :key="1">
+                            <v-card flat>
+                                <v-layout row wrap justify-center>
+                                    <v-flex my-5 xs6>
+                                        <img class="mx-auto my-5" th:src="@{/laba1_1.png}" alt=""/>
+                                        <v-form v-model="valid1">
+                                            <v-text-field
+                                                    label="var A"
+                                                    v-model="a"
+                                                    :rules="numberRules"
+                                                    :counter="5"
+                                                    required
+                                                    :disabled="readDb || readFile">
+                                                >
+                                            </v-text-field>
+
+                                            <v-text-field
+                                                    label="var B"
+                                                    v-model="b"
+                                                    :rules="numberRules"
+                                                    :counter="5"
+                                                    :disabled="readDb || readFile"
+                                                    required
+                                            ></v-text-field>
+                                            <v-text-field
+                                                    label="var C"
+                                                    v-model="c"
+                                                    :rules="numberRules"
+                                                    :counter="5"
+                                                    required
+                                                    :disabled="readDb || readFile"
+                                            ></v-text-field>
+                                            <v-text-field
+                                                    label="var D"
+                                                    v-model="d"
+                                                    :rules="numberRules"
+                                                    :counter="5"
+                                                    required
+                                                    :disabled="readDb || readFile"
+                                            ></v-text-field>
+                                            <v-text-field
+                                                    label="E-mail"
+                                                    v-model="email"
+                                                    :rules="emailRules"
+                                            ></v-text-field>
+                                            <v-checkbox
+                                                    :label="`ReadFile`"
+                                                    v-model="readFile"
+                                                    :disabled="readDb"
+                                            ></v-checkbox>
+                                            <v-checkbox
+                                                    :label="`ReadDb`"
+                                                    v-model="readDb"
+                                                    :disabled="readFile"
+                                            ></v-checkbox>
+                                            <input id="_csrf" type="hidden"
+                                                   th:value="${_csrf.token}">
+                                            <v-btn
+                                                    @click="submitLinear"
+                                                    :disabled="!(readFile || readDb) && !valid1"
+                                            >
+                                                submit
+                                            </v-btn>
+                                            <v-btn @click="clear">clear</v-btn>
+                                        </v-form>
+
+                                    </v-flex>
+                                    <v-flex xs12 sm8 my-5>
+                                        <v-card v-if="resultLinear" class="title">
+                                            <v-card-media th:src="@{ArNFQ.gif}" height="200px">
+                                            </v-card-media>
+                                            <v-card-title primary-title>
+                                                <div>
+                                                    <div class="blue--text" v-html="resultLinear">
+
+                                                    </div>
+                                                </div>
+                                            </v-card-title>
+                                        </v-card>
+                                    </v-flex>
+                                </v-layout>
+
+                            </v-card>
+                        </v-tab-item>
+                        <v-tab
+                                :key="2">
+                            Branching
+                            <v-icon>help_outline</v-icon>
+                        </v-tab>
+                        <v-tab-item
+                                :key="2">
+                            <v-card flat>
+                                <v-layout row wrap justify-center>
+                                    <v-flex my-5 xs6>
+                                        <img class="mx-auto my-5" th:src="@{/laba1_2.png}" alt=""/>
+                                        <v-form v-model="valid3">
+                                            <v-text-field
+                                                    label="var D"
+                                                    v-model="d"
+                                                    :rules="numberRules"
+                                                    :counter="5"
+                                                    :disabled="readDb || readFile"
+                                                    required
+                                            ></v-text-field>
+                                            <v-text-field
+                                                    label="var L"
+                                                    v-model="l"
+                                                    :rules="numberRules"
+                                                    :counter="5"
+                                                    :disabled="readDb || readFile"
+                                                    required
+                                            ></v-text-field>
+                                            <v-text-field
+                                                    label="var K"
+                                                    v-model="k"
+                                                    :rules="numberRules"
+                                                    :counter="5"
+                                                    :disabled="readDb || readFile"
+                                                    required
+                                            ></v-text-field>
+                                            <v-text-field
+                                                    label="var F"
+                                                    v-model="f"
+                                                    :rules="numberRules"
+                                                    :counter="5"
+                                                    :disabled="readDb || readFile"
+                                                    required
+                                            ></v-text-field>
+                                            <v-text-field
+                                                    label="var W"
+                                                    v-model="w"
+                                                    :rules="numberRules"
+                                                    :counter="5"
+                                                    required
+                                                    :disabled="readDb || readFile"
+                                            ></v-text-field>
+                                            <v-text-field
+                                                    label="E-mail"
+                                                    v-model="email"
+                                                    :rules="emailRules"
+                                            ></v-text-field>
+                                            <v-checkbox
+                                                    :label="`ReadFile`"
+                                                    v-model="readFile"
+                                                    :disabled="readDb"
+                                            ></v-checkbox>
+                                            <v-checkbox
+                                                    :label="`ReadDb`"
+                                                    v-model="readDb"
+                                                    :disabled="readFile"
+                                            ></v-checkbox>
+                                            <input id="_csrf" type="hidden"
+                                                   th:value="${_csrf.token}">
+                                            <v-btn
+                                                    @click="submitBranching"
+                                                    :disabled="!(readFile || readDb) && !valid3"
+                                            >
+                                                submit
+                                            </v-btn>
+                                            <v-btn @click="clear">clear</v-btn>
+                                        </v-form>
+                                    </v-flex>
+                                    <v-flex xs12 sm8 my-5>
+                                        <v-card v-if="resultBranching" class="title">
+                                            <v-card-media th:src="@{ArNFQ.gif}" height="200px">
+                                            </v-card-media>
+                                            <v-card-title primary-title>
+                                                <div>
+                                                    <div v-html="resultBranching">
+
+                                                    </div>
+                                                </div>
+                                            </v-card-title>
+                                        </v-card>
+                                    </v-flex>
+                                </v-layout>
+                            </v-card>
+                        </v-tab-item>
+                        <v-tab
+                                :key="3">
+                            Cycle
+                            <v-icon>loop</v-icon>
+                        </v-tab>
+                        <v-tab-item
+                                :key="3">
+                            <v-card flat>
+                                <v-layout row wrap justify-center>
+                                    <v-flex my-5 xs6>
+                                        <img class="mx-auto my-5" th:src="@{/laba1_3.png}" alt=""/>
+                                        <v-form v-model="valid2">
+                                            <v-text-field
+                                                    label="var B"
+                                                    v-model="b"
+                                                    :rules="numberRules"
+                                                    :counter="5"
+                                                    :disabled="readDb || readFile"
+                                                    required
+                                            ></v-text-field>
+                                            <v-text-field
+                                                    label="E-mail"
+                                                    v-model="email"
+                                                    :rules="emailRules"
+                                            ></v-text-field>
+                                            <v-checkbox
+                                                    :label="`ReadFile`"
+                                                    v-model="readFile"
+                                                    :disabled="readDb"
+                                            ></v-checkbox>
+                                            <v-checkbox
+                                                    :label="`ReadDb`"
+                                                    v-model="readDb"
+                                                    :disabled="readFile"
+                                            ></v-checkbox>
+                                            <input id="_csrf" type="hidden"
+                                                   th:value="${_csrf.token}">
+                                            <v-btn
+                                                    @click="submitCycle"
+                                                    :disabled=" !(readFile || readDb) &&  !valid2">
+                                                submit
+                                            </v-btn>
+                                            <v-btn @click="clear">clear</v-btn>
+                                        </v-form>
+                                    </v-flex>
+                                    <v-flex xs12 sm8 my-5>
+                                        <v-card v-if="resultCycle" class="title">
+                                            <v-card-media th:src="@{ArNFQ.gif}" height="200px">
+                                            </v-card-media>
+                                            <v-card-title primary-title>
+                                                <div>
+                                                    <div v-html="resultCycle">
+
+                                                    </div>
+                                                </div>
+                                            </v-card-title>
+                                        </v-card>
+                                    </v-flex>
+                                </v-layout>
+                            </v-card>
+                        </v-tab-item>
+
+                    </v-tabs>
+                </v-flex>
+            </v-layout>
+        </v-container>
+    </v-app>
+</div>
+<script type="text/javascript" th:src="@{/webjars/vue/2.5.13/vue.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/axios/0.17.1/dist/axios.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/vuetify.js}"></script>
+<script type="text/javascript" th:src="@{/js/vue-resource.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/laba1.js}"></script>
+
+</body>
+</html>
